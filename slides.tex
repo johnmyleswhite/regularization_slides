@@ -1,0 +1,2800 @@
+\documentclass[xcolor=pdftex,dvipsnames,table]{beamer}
+
+\usepackage{beamerthemesplit}
+\setbeamertemplate{footline}[page number]{}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Regularization and Big Data}
+\author{John Myles White}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\frame
+{
+	\begin{quote}
+Data, data, data! I can't make bricks without clay!
+	\end{quote}
+}
+
+\frame
+{
+	According to reputable sources, we're in the Age of Big Data.
+}
+
+\frame
+{
+	But what makes data big?
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Rectangle.pdf}
+	\end{center}
+}
+
+\frame
+{
+	What happens as $N \to \infty$?
+}
+
+\frame
+{
+	Traditionally, good things:
+	\begin{itemize}
+		\item{Law of Large Numbers}
+		\item{Central Limit Theorem}
+		\item{Consistent estimators}
+		\item{Asymptotic guarantees}
+		\item{Large sample theory}
+	\end{itemize}
+}
+
+\frame
+{
+	What happens as $D \to \infty$?
+}
+
+\frame
+{
+	Traditionally, bad things:
+	\begin{itemize}
+		\item{Underdetermined systems}
+		\item{Infinitely many perfect models}
+		\item{Massive overfitting}
+	\end{itemize}
+}
+
+\frame
+{
+	What leads to overfitting?
+}
+
+\frame
+{
+	Example data:
+		\begin{itemize}
+			\item{$N = 200$}
+			\item{$D = 1$}
+			\item{$y = sin(4 \pi x) + \epsilon$}
+			\item{$\epsilon \sim N(0, 0.75)$}
+		\end{itemize}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/pattern.pdf}
+	\end{center}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/raw_data.pdf}
+	\end{center}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/ols_regression.pdf}
+	\end{center}
+}
+
+\frame
+{
+	Linear regression:
+	\begin{itemize}
+		\item{$Y = \beta_{0} + \beta_{1} X$}
+	\end{itemize}
+}
+
+\frame
+{
+	Linear regression isn't very expressive. We need a stronger model.
+}
+
+\frame
+{
+	Polynomial regression:
+	\begin{itemize}
+		\item{$Y = \beta_{0} + \beta_{1} X + \beta_{2} X ^ 2$}
+		\item{$Y = \beta_{0} + \beta_{1} X + \beta_{2} X ^ 2 + \beta_{3} X ^ 3$}
+		\item{$\ldots$}
+		\item{$Y = \beta_{0} + \beta_{1} X + \beta_{2} X ^ 2 + \beta_{3} X ^ 3 + \ldots + \beta_{20} X ^ {20}$}
+	\end{itemize}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_1.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_2.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_3.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_4.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_5.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_6.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_7.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_8.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_9.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_10.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_11.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_12.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_13.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_14.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_15.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_16.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_17.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_18.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_19.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_20.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_21.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_22.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_23.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_24.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_degree_25.pdf}
+	\end{center}
+}
+
+\frame
+{
+	As $D \to N$, we fit the data better and better.
+}
+
+\frame
+{
+	But our model gets further and further from the true pattern\ldots
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_1.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_2.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_3.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_4.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_5.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_6.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_7.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_8.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_9.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_10.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_11.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_12.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_13.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_14.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_15.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_16.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_17.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_18.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_19.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_20.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_21.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_22.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_23.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_24.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_degree_25.pdf}
+	\end{center}
+}
+
+\frame
+{
+	Overfitting always occur when our models become too expressive
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/overfitting.pdf}
+	\end{center}
+}
+
+\frame
+{
+	How do we prevent overfitting?
+}
+
+\frame
+{
+	One approach:
+	\begin{itemize}
+		\item{Split data into training set and test set}
+		\item{Fit model to training set}
+		\item{Assess performance on test set}
+		\item{Pick model that does best on held out test set}
+	\end{itemize}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_test_split.pdf}
+	\end{center}
+}
+
+\frame
+{
+	This underestimates the strongest model we can safely use.
+}
+
+\frame
+{
+	Another approach:
+	\begin{itemize}
+		\item{Regularize our model}
+	\end{itemize}
+}
+
+\frame
+{
+	Unregularized models minimize prediction error:
+	\begin{itemize}
+		\item{OLS regression}
+		\item{Logistic regresion}
+	\end{itemize}
+}
+
+\frame
+{
+	\[
+		\beta ^ {*} =  \arg \min_{\beta} (Y - X \beta) ^ 2
+	\]
+}
+
+\frame
+{
+	Regularized models minimize prediction error and model size:
+	\begin{itemize}
+		\item{Ridge regression}
+		\item{Lasso regression}
+	\end{itemize}
+}
+
+\frame
+{
+	\[
+		\beta ^ {*} =  \arg \min_{\beta} (Y - X \beta) ^ 2 + \beta ^ 2
+	\]
+}
+
+\frame
+{
+	\[
+		\beta ^ {*} =  \arg \min_{\beta} (Y - X \beta) ^ 2 + |\beta|
+	\]
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_1.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_2.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_3.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_4.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_5.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_6.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_7.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_8.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_9.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_10.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_11.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_12.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_13.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_14.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_15.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_16.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_17.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_18.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_19.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_20.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_21.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_22.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_23.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_24.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_25.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_26.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_27.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_28.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_29.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_30.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_31.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_32.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_33.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_34.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_35.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_36.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_37.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_38.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_39.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_40.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_41.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_42.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_43.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_44.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_45.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_46.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_47.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_48.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_49.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_50.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_51.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_52.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_53.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_54.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_55.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_56.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_57.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_58.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_59.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_60.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_61.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_62.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_63.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_64.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_65.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_66.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_67.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_68.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_69.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_70.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_71.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_72.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_73.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_74.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_75.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_76.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_77.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_78.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_79.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_80.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_81.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_82.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_83.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_84.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_85.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_86.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_87.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_88.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_89.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_90.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_91.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_92.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_93.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_94.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_95.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_96.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_97.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_98.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_99.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_ridge_lambda_100.pdf}
+	\end{center}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_1.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_2.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_3.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_4.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_5.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_6.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_7.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_8.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_9.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_10.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_11.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_12.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_13.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_14.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_15.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_16.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_17.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_18.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_19.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_20.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_21.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_22.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_23.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_24.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_25.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_26.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_27.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_28.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_29.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_30.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_31.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_32.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_33.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_34.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_35.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_36.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_37.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_38.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_39.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_40.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_41.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_42.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_43.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_44.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_45.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_46.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_47.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_48.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_49.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_50.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_51.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_52.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_53.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_54.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_55.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_56.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_57.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_58.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_59.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_60.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_61.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_62.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_63.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_64.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_65.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_66.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_67.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_68.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_69.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_70.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_71.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_72.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_73.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_74.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_75.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_76.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_77.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_78.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_79.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_80.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_81.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_82.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_83.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_84.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_85.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_86.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_87.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_88.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_89.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_90.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_91.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_92.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_93.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_94.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_95.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_96.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_97.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_98.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_99.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_ridge_lambda_100.pdf}
+	\end{center}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_1.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_2.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_3.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_4.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_5.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_6.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_7.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_8.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_9.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_10.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_11.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_12.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_13.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_14.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_15.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_16.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_17.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_18.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_19.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_20.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_21.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_22.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_23.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_24.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_25.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_26.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_27.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_28.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_29.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_30.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_31.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_32.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_33.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_34.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_35.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_36.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_37.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_38.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_39.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_40.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_41.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_42.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_43.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_44.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_45.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_46.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_47.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_48.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_49.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_50.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_51.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_52.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_53.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_54.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_55.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_56.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_57.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_58.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_59.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_60.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_61.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_62.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_63.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_64.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_65.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_66.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_67.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_68.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/training_lasso_lambda_69.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_1.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_2.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_3.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_4.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_5.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_6.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_7.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_8.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_9.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_10.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_11.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_12.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_13.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_14.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_15.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_16.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_17.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_18.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_19.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_20.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_21.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_22.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_23.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_24.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_25.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_26.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_27.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_28.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_29.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_30.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_31.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_32.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_33.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_34.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_35.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_36.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_37.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_38.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_39.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_40.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_41.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_42.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_43.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_44.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_45.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_46.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_47.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_48.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_49.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_50.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_51.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_52.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_53.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_54.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_55.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_56.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_57.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_58.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_59.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_60.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_61.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_62.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_63.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_64.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_65.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_66.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_67.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_68.pdf}
+	\end{center}
+}
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{Overfitting/true_lasso_lambda_69.pdf}
+	\end{center}
+}
+
+\frame
+{
+	How can we use regularization to solve real world problems?
+}
+
+\frame
+{
+	The text regression problem:
+	\begin{itemize}
+		\item{$N$ documents}
+		\item{$D$ words}
+		\item{Predict continuous value for each document from word counts}
+	\end{itemize}
+}
+
+\frame
+{
+	Examples:
+	\begin{itemize}
+		\item{From IPO notices, predict stock volatility}
+		\item{From press releases, predict Congress member's politics}
+		\item{\ldots}
+	\end{itemize}
+}
+
+\frame
+{
+	We need regularization because we:
+	\begin{itemize}
+		\item{Observe more words than documents}
+		\item{Want sparse solutions, e.g. a few words that matter a lot}
+	\end{itemize}
+}
+
+\frame
+{
+	From press releases, how can we find words that signal politics?
+}
+
+\frame
+{
+	\begin{quote}
+		Hey, does anybody notice this crazy thing that we're on the road to socialism? I'm just saying. Wow. We got --- we got the SCHIPs thing going for us. That's great.
+	\end{quote}
+}
+
+\frame
+{
+	\begin{quote}
+		How about that McDonalds two blocks from Ground Zero? That's killed more people than the nineteen hijackers.
+	\end{quote}
+}
+
+\frame
+{
+	Who thinks:
+	\begin{enumerate}
+		\item{Text A was pro-Democrat and Text B was pro-Republican?}
+		\item{Text A was pro-Republican and Text A was pro-Democrat?}
+	\end{enumerate}
+}
+
+\frame
+{
+	Corpus Statistics:
+	\begin{itemize}
+		\item{$N = 1,408$ unique documents}
+		\item{$D = 20,521$ unique words}
+	\end{itemize}
+}
+
+\frame
+{
+	Document A:
+	\begin{quote}
+	i want to talk about jobs lately it seems that everyone says they want to talk about jobs and that we'll get around to tackling jobs next week or the week after
+	\end{quote}
+}
+
+\frame
+{
+	Document B:
+	\begin{quote}
+	there was a major legislative accomplishment in washington last week and it's getting less attention than it deserves because it isn't national health care reform
+	\end{quote}
+}
+
+\frame
+{
+	Document Term Matrix:
+	\begin{table}[htdp]
+	\begin{center}
+	\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+	\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Document & I & Want & Talk & Jobs & Week \\
+	\hline
+	A & 1 & 2 & 2 & 3 & 2 \\
+	B & 0 & 0 & 0 & 0 & 1 \\
+	\hline
+	\end{tabular}
+	\end{center}
+	\end{table}
+}
+
+\frame
+{
+	\begin{itemize}
+		\item{Fit Lasso regression to word counts}
+		\item{Predict ideal points for senators}
+	\end{itemize}
+}
+
+\frame
+{
+	\begin{center}
+		\includegraphics[scale = 0.4]{ideal_point_distribution.pdf}
+	\end{center}
+}
+
+\frame
+{
+	Top 10 Most Republican Terms:
+	\begin{table}[htdp]
+	\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+	\begin{center}
+	\begin{tabular}{|c|c|}
+	\hline
+	Term & Value \\ 
+	\hline
+	okla & 1.23 \\
+	bailey & 0.647 \\
+	johnny & 0.588 \\
+	administering & 0.561 \\
+	neb & 0.556 \\
+	sam & 0.542 \\
+	986 & 0.532 \\
+	texans & 0.493 \\
+	patriotism & 0.466 \\
+	demint & 0.417 \\
+	\hline
+	\end{tabular}
+	\end{center}
+	\label{default}
+	\end{table}
+}
+
+\frame
+{
+	Top 10 Most Democratic Terms:
+	\begin{table}[htdp]
+	\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+	\begin{center}
+	\begin{tabular}{|c|c|}
+	\hline
+	Term & Value \\ 
+	\hline
+	sherrod & -0.367 \\
+	sheldon & -0.249 \\
+	dec & -0.196 \\
+	possess & -0.168 \\
+	salaries & -0.158 \\
+	tom & -0.152 \\
+	debbie & -0.151 \\
+	dark & -0.148 \\
+	lautenberg & -0.133 \\
+	fought & -0.106 \\
+	\hline
+	\end{tabular}
+	\end{center}
+	\label{default}
+	\end{table}
+}
+
+\frame
+{
+	Debugging:
+	\begin{itemize}
+		\item{Too many names of senators in our list}
+		\item{Strip out all the names from corpus}
+		\item{Run analysis from scratch on clean corpus}
+	\end{itemize}
+}
+
+\frame
+{
+	Top 10 Most Republican Terms excluding Names:
+	\begin{table}[htdp]
+	\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+	\begin{center}
+	\begin{tabular}{|c|c|}
+	\hline
+	Term & Value \\ 
+	\hline
+	okla & 1.13 \\
+	neb & 0.726 \\
+	bailey & 0.674 \\
+	2415 & 0.638 \\
+	986 & 0.578 \\
+	kansans & 0.543 \\
+	administering & 0.516 \\
+	texans & 0.467 \\
+	profoundly & 0.459 \\
+	patriotism & 0.430 \\
+	\hline
+	\end{tabular}
+	\end{center}
+	\label{default}
+	\end{table}
+}
+
+\frame
+{
+	Top 10 Most Democratic Terms excluding Names:
+	\begin{table}[htdp]
+	\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+	\begin{center}
+	\begin{tabular}{|c|c|}
+	\hline
+	Term & Value \\ 
+	\hline
+	cedar & -0.224 \\
+	chaired & -0.197 \\
+	dec & -0.158 \\
+	dark & -0.146 \\
+	blocked & -0.138 \\
+	reverses & -0.134 \\
+	1960s & -0.125 \\
+	insurers & -0.0958 \\
+	fought & -0.0926 \\
+	possess & -0.0923 \\
+	\hline
+	\end{tabular}
+	\end{center}
+	\label{default}
+	\end{table}
+}
+
+\end{document}
